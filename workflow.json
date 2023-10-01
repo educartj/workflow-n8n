@@ -1,0 +1,429 @@
+{
+  "name": "N8N e ChatGPT - Ninja WP",
+  "nodes": [
+    {
+      "parameters": {
+
+      },
+      "id": "b0cc50ac-e02e-423c-9988-7cdd87cfac0c",
+      "name": "When clicking \"Execute Workflow\"",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [160, 240]
+    },
+    {
+      "parameters": {
+        "resource": "chat",
+        "model": "gpt-3.5-turbo-16k-0613",
+        "prompt": {
+          "messages": [
+            {
+              "content": "=Como especialista em Marketing e Cria\u00E7\u00E3o de conte\u00FAdo para internet, seja capaz de criar conte\u00FAdos poderosos e otimizados para SEO, que rankeiam bem no Google.\nEst\u00E1 \u00E9 a palavra chave {{ $('Loop').item.json[\"Palavra Chave\"] }}\nCom essa palavra chave crie o conte\u00FAdo, com subt\u00EDtulos, Espefique bem o conte\u00FAdo para no m\u00EDnimo ter 3000 palavras.\nMe retorne o conte\u00FAdo com as marca\u00E7\u00F5es de tags HTML correspondentes como \u003Cp\u003E, \u003Ch2\u003E e \u003Ch3\u003E"
+            }
+          ]
+        },
+        "simplifyOutput": false,
+        "options": {
+
+        }
+      },
+      "id": "4fa015d4-8c41-4898-90af-4d752dfd647d",
+      "name": "OpenAI",
+      "type": "n8n-nodes-base.openAi",
+      "typeVersion": 1,
+      "position": [840, 220],
+      "credentials": {
+        "openAiApi": {
+          "id": "PxthfTg9KsRs16w1",
+          "name": "OpenAi Teste"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "documentId": {
+          "__rl": true,
+          "value": "1XodTVj2hkVE7s7R3fqpXnVuXULDYv3BGoaOYH_D6LMk",
+          "mode": "list",
+          "cachedResultName": "SEO Ninja",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1XodTVj2hkVE7s7R3fqpXnVuXULDYv3BGoaOYH_D6LMk/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "P\u00E1gina1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1XodTVj2hkVE7s7R3fqpXnVuXULDYv3BGoaOYH_D6LMk/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Feito"
+            }
+          ]
+        },
+        "options": {
+          "returnAllMatches": "returnAllMatches"
+        }
+      },
+      "id": "2f2d52aa-beee-4f94-9f5d-bbf9b3f6f458",
+      "name": "Google Sheets - Ler Palavras Chaves",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [380, 240],
+      "credentials": {
+        "googleApi": {
+          "id": "jA5n6Dfi7308ENqA",
+          "name": "Conta Google Cloud"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1XodTVj2hkVE7s7R3fqpXnVuXULDYv3BGoaOYH_D6LMk",
+          "mode": "list",
+          "cachedResultName": "SEO Ninja",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1XodTVj2hkVE7s7R3fqpXnVuXULDYv3BGoaOYH_D6LMk/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "P\u00E1gina1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1XodTVj2hkVE7s7R3fqpXnVuXULDYv3BGoaOYH_D6LMk/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Palavra Chave": "={{ $('Loop').item.json[\"Palavra Chave\"] }}",
+            "Categoria": "={{ $('Loop').item.json[\"Categoria\"] }}",
+            "Feito": "=OK",
+            "Link": "={{ $('Wordpress').item.json[\"link\"] }}"
+          },
+          "matchingColumns": [
+            "Palavra Chave"
+          ],
+          "schema": [
+            {
+              "id": "Palavra Chave",
+              "displayName": "Palavra Chave",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Categoria",
+              "displayName": "Categoria",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Feito",
+              "displayName": "Feito",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Link",
+              "displayName": "Link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ]
+        },
+        "options": {
+
+        }
+      },
+      "id": "266f1f39-806b-40a3-8277-e3c827e742c3",
+      "name": "Google Sheets - Atualizar",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [1840, 220],
+      "credentials": {
+        "googleApi": {
+          "id": "jA5n6Dfi7308ENqA",
+          "name": "Conta Google Cloud"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "title": "={{ $('Loop').item.json[\"Palavra Chave\"] }}",
+        "additionalFields": {
+          "content": "={{ $('OpenAI').item.json[\"choices\"][0][\"message\"][\"content\"] }}",
+          "status": "publish",
+          "categories": "={{ $('Loop').item.json[\"ID da Categoria\"] }}"
+        }
+      },
+      "id": "aaa4160d-8580-4447-bc4d-ad1f459780e2",
+      "name": "Wordpress",
+      "type": "n8n-nodes-base.wordpress",
+      "typeVersion": 1,
+      "position": [1020, 220],
+      "credentials": {
+        "wordpressApi": {
+          "id": "npmUiMzPMxt0cpaQ",
+          "name": "Wordpress Gloss\u00E1rio"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "batchSize": 1,
+        "options": {
+          "reset": false
+        }
+      },
+      "id": "61182bea-2ea4-4294-b3c3-91b7c073f52c",
+      "name": "Loop",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 2,
+      "position": [620, 240]
+    },
+    {
+      "parameters": {
+        "amount": 30,
+        "unit": "seconds"
+      },
+      "id": "5167469c-0511-4676-aaaa-c64d3ec2ae2e",
+      "name": "Aguarde",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1,
+      "position": [2040, 220],
+      "webhookId": "a2de8633-aee5-4eba-8bb6-c5cc9dac7b8a"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://glossario.maiconramos.com/wp-json/wp/v2/media/",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "wordpressApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "cache-control",
+              "value": "no-cache"
+            },
+            {
+              "name": "content-disposition",
+              "value": "=attachment; filename={{ $binary.data.fileName }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "binaryData",
+        "inputDataFieldName": "data",
+        "options": {
+          "redirect": {
+            "redirect": {
+
+            }
+          }
+        }
+      },
+      "id": "72c66080-1bb4-42bf-8947-ca16f500d815",
+      "name": "Salvar imagem em m\u00EDdia",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [1400, 220],
+      "credentials": {
+        "wordpressApi": {
+          "id": "npmUiMzPMxt0cpaQ",
+          "name": "Wordpress Gloss\u00E1rio"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "={{ $('Loop').item.json[\"Imagem\"] }}",
+        "options": {
+
+        }
+      },
+      "id": "8b81a635-2485-4258-9dd3-db4ce4b4ced4",
+      "name": "Baixar a imagem",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [1200, 220]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://glossario.maiconramos.com/wp-json/wp/v2/posts/{{ $('Wordpress').item.json[\"id\"] }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "wordpressApi",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "featured_media",
+              "value": "={{ $('Salvar imagem em m\u00EDdia').item.json[\"id\"] }}"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {
+
+            }
+          }
+        }
+      },
+      "id": "7c6d2cb1-e0d6-4810-899f-42bf3cfc1e3c",
+      "name": "Atualizar Post com a imagem",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [1620, 220],
+      "credentials": {
+        "wordpressApi": {
+          "id": "npmUiMzPMxt0cpaQ",
+          "name": "Wordpress Gloss\u00E1rio"
+        }
+      }
+    }
+  ],
+  "pinData": {
+
+  },
+  "connections": {
+    "When clicking \"Execute Workflow\"": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets - Ler Palavras Chaves",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI": {
+      "main": [
+        [
+          {
+            "node": "Wordpress",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets - Ler Palavras Chaves": {
+      "main": [
+        [
+          {
+            "node": "Loop",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop": {
+      "main": [
+        [
+          {
+            "node": "OpenAI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wordpress": {
+      "main": [
+        [
+          {
+            "node": "Baixar a imagem",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets - Atualizar": {
+      "main": [
+        [
+          {
+            "node": "Aguarde",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Baixar a imagem": {
+      "main": [
+        [
+          {
+            "node": "Salvar imagem em m\u00EDdia",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Salvar imagem em m\u00EDdia": {
+      "main": [
+        [
+          {
+            "node": "Atualizar Post com a imagem",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Atualizar Post com a imagem": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets - Atualizar",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aguarde": {
+      "main": [
+        [
+          {
+            "node": "Loop",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "4bd739f4-cee4-45fb-a6f4-83534ea66b82",
+  "id": "e1r4P5GGvkZXayYI",
+  "meta": {
+    "instanceId": "4f77dda041071057d6d47972b65c686dbee288ac198bc3d7d790a27075347603"
+  },
+  "tags": []
+}
